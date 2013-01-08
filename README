@@ -1,0 +1,16 @@
+Uncia is a set of tools making writing scripts in PHP a much lesser pain
+that is usually tends to.
+
+It is in early stage, as well as hardly documented.
+Please refer to demo.php for an overview of its capabilities.
+
+USAGE:
+
+	For normal use:
+	require_once 'uncia/uncia.php';
+
+	Default package gives you global aliases and error handling.
+	If you do not want that:
+	require_once 'uncia/bare.php';
+	You can turn on global aliases or error handling selectively with
+	\Slik\Uncia\aliases() and \Slik\Uncia\errors() accordingly.
