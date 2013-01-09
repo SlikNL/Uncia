@@ -36,7 +36,8 @@ function run($cmd, $values = null, $options = null)
 	$code = proc_close($process);
 
 	if ($code > 0) {
-		throw new Exception\RunError($stderr);
+		$error = trim($stderr) ?: trim($stdout);
+		throw new Exception\RunError($error);
 	}
 
 	return $stdout;
