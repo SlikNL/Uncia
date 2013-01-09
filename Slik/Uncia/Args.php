@@ -231,7 +231,7 @@ class Args
 abstract class Argument
 {
 	public $default, $description, $name;
-	public $_needsValue = false, $_valueListAllowed = true, $_valueList;
+	public $_needsValue = false, $_valueListAllowed = true, $_valueList = array();
 
 	abstract public function __construct($string);
 
@@ -284,7 +284,7 @@ abstract class Argument
 		$value = $this->_value($value);
 		if (is_array($this->_valueList)) {
 			assert('$this->_valueListAllowed');
-			if (!in_array($value, $this->_valueList)) {
+			if ($this->_valueList && !in_array($value, $this->_valueList)) {
 				throw new Exception\UserError($this->name
 					.' can only be one of the following: '
 					.implode(', ', $this->_valueList)
