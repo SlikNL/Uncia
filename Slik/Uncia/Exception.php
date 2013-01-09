@@ -9,16 +9,10 @@ class Exception extends \Exception
 
 		$level = 1;
 
-		if (!isset($trace[$level]['file'])
-			&& ($trace[$level+1]['function'] === 'call_user_func_array')
-			&& ($trace[$level+1]['args'][0] === '\\Slik\\Uncia\\run')
-		) {
-			$level += 3;
-		}
-
 		while (isset($trace[$level+1]) && (
 			$this->frameIsLocalClass($trace[$level])
 			|| $this->frameIsLocalFunction($trace[$level])
+			|| $this->frameIsLocalAlias($trace[$level])
 		)) {
 			$level += 1;
 		}
@@ -29,6 +23,15 @@ class Exception extends \Exception
 		$this->line = isset($info['line']) ? $info['line'] : 'unknown';
 
 		parent::__construct($message, $code);
+	}
+
+	private function frameIsLocalAlias($frame)
+	{
+		return isset($frame['function'])
+			&& $frame['function'] === 'call_user_func_array'
+			&& isset($frame['args'])
+			&& isset($frame['args'][0])
+			&& strpos($frame['args'][0], 'Slik\\Uncia') !== false;
 	}
 
 	private function frameIsLocalClass($frame)
