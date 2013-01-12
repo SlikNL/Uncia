@@ -62,3 +62,24 @@ function stdout()
 {
 	return Output::create(func_get_args())->stdout();
 }
+
+function ttycolor($name)
+{
+	if ($name === 'restore') {
+		return "\033[0m";
+	}
+	static $map = array(
+		'black' => '0;30',
+		'red' => '0;31',
+		'green' => '0;32',
+		'brown' => '0;33',
+		'blue' => '0;34',
+		'purple' => '0;35',
+		'cyan' => '0;36',
+		'white' => '1;37',
+	);
+	if (!isset($map[$name])) {
+		throw new SyntaxError('Unknown color '.$name);
+	}
+	return "\033[" . $map[$name] . "m";
+}

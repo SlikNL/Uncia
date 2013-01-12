@@ -17,12 +17,12 @@ class Output
 
 	public function stderr()
 	{
-		file_put_contents('php://stderr', $this->toString());
+		file_put_contents('php://stderr', $this->toString(STDERR));
 	}
 
 	public function stdout()
 	{
-		echo $this->toString();
+		echo $this->toString(STDOUT);
 	}
 
 	public function underline($char = '-')
@@ -68,7 +68,7 @@ class Output
 		return $str;
 	}
 
-	private function toString()
+	private function toString($fd)
 	{
 		$result = $this->format($this->args);
 
@@ -81,6 +81,16 @@ class Output
 					strlen($this->underline)
 				)
 			)."\n";
+		}
+
+		// Restore colors
+		if (strpos($result, "\033") !== false) {
+			$result = substr($result, 0, -1) . ttycolor('restore') . substr($result, -1);
+		}
+
+		// Remove colors
+		if (!posix_isatty($fd)) {
+			$result = preg_replace('/\\033\\[[\\d;]{1,4}m/', '', $result);
 		}
 
 		return $result;

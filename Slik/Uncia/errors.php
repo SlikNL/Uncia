@@ -13,7 +13,8 @@ if (!isset($_SERVER['UNCIA_DEBUG'])) {
 			if ($e instanceof Exception\Abort) {
 				exit($e->getCode());
 			}
-			$str = 'Error: '.trim($e->getMessage() ?: get_class($e));
+			$str = ttycolor('brown').'Error:'
+				.' '.trim($e->getMessage() ?: get_class($e));
 			if ($e->getFile()) {
 				$str .= ' in ' . basename($e->getFile());
 				if ($e->getLine()) {

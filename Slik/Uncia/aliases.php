@@ -43,3 +43,8 @@ function str()
 {
 	return call_user_func_array('\\Slik\\Uncia\\str', func_get_args());
 }
+
+function ttycolor()
+{
+	return call_user_func_array('\\Slik\\Uncia\\ttycolor', func_get_args());
+}

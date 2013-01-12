@@ -54,7 +54,7 @@ class Args
 			if ($throw) {
 				throw $e;
 			}
-			stderr('error: '.$e->getMessage()."\n\n");
+			stderr(ttycolor('brown').'error: '.$e->getMessage()."\n\n");
 			$this->usage();
 			throw new Exception\Abort(2);
 		}
