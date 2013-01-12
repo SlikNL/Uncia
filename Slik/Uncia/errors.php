@@ -21,6 +21,19 @@ if (!isset($_SERVER['UNCIA_DEBUG'])) {
 				}
 			}
 			stderr($str);
+
+			if (isset($_SERVER['DEBUG'])) {
+				stderr('Traceback:');
+				foreach ($e->getTrace() as $frame) {
+					if (isset($frame['file'])) {
+						$str = ' - ' . basename($frame['file']);
+						if ($frame['line']) {
+							$str .= ':'.$frame['line'];
+						}
+						stderr($str);
+					}
+				}
+			}
 		}
 	);
 
