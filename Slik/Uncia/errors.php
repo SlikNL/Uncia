@@ -20,7 +20,6 @@ if (!isset($_SERVER['UNCIA_DEBUG'])) {
 					$str .= ':'.$e->getLine();
 				}
 			}
-			$str .= "\n";
 			stderr($str);
 		}
 	);
