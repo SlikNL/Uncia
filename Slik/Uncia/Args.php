@@ -33,7 +33,7 @@ class Args
 		return $this->add($arg, 'String');
 	}
 
-	public function parse($args = null)
+	public function parse($args = null, $throw = false)
 	{
 		if (is_null($args)) {
 			global $argv;
@@ -45,9 +45,15 @@ class Args
 		try {
 			$result = $this->parse_args($args);
 		} catch (Exception\ArgsError\ShowUsage $e) {
+			if ($throw) {
+				throw $e;
+			}
 			$this->usage();
 			throw new Exception\Abort(2);
 		} catch (Exception\UserError $e) {
+			if ($throw) {
+				throw $e;
+			}
 			stderr('error: '.$e->getMessage()."\n\n");
 			$this->usage();
 			throw new Exception\Abort(2);
@@ -135,15 +141,6 @@ class Args
 	{
 		$result = new \stdClass();
 
-		foreach ($this->options as $option) {
-			$default = $option->default;
-			$result->{$option->name} = is_callable($default) ? $default() : $default;
-		}
-		foreach ($this->positional as $positional) {
-			$default = $positional->default;
-			$result->{$positional->name} = is_callable($default) ? $default() : $default;
-		}
-
 		$args = $this->normalize_args($args);
 
 		$positional_stack = $this->positional;
@@ -157,15 +154,19 @@ class Args
 		if (isset($this->positional[count($args) - 1])
 			&& $this->positional[count($args) - 1]->required
 		) {
-			throw new Exception\ArgsError\ShowUsage();
+			throw new Exception\UserError('Missing required values');
 		}
 
-		while ($value = next($args)) {
+		while (true) {
+			$value = next($args);
+			if (!is_string($value)) {
+				break;
+			}
+
 			if ($value === '--') {
 				$options_enabled = false;
 				continue;
 			}
-
 			$argument = null;
 			if (substr($value, 0, 1) === '-' && $options_enabled) {
 				if (in_array($value, array('-h', '--help'))) {
@@ -207,10 +208,20 @@ class Args
 			$result->{$argument->name} = $value;
 		}
 
-		foreach ($positional_stack as $positional) {
-			if ($positional->required) {
-				throw new Exception\UserError('Value for '.$positional->name.' is missing.');
+		foreach ($this->options as $option) {
+			if (property_exists($result, $option->name)) {
+				continue;
 			}
+			$default = $option->default;
+			$result->{$option->name} = is_callable($default) ? $default() : $default;
+		}
+
+		foreach ($this->positional as $positional) {
+			if (property_exists($result, $positional->name)) {
+				continue;
+			}
+			$default = $positional->default;
+			$result->{$positional->name} = is_callable($default) ? $default() : $default;
 		}
 
 		return $result;
@@ -231,7 +242,7 @@ class Args
 abstract class Argument
 {
 	public $default, $description, $name;
-	public $_needsValue = false, $_valueListAllowed = true, $_valueList = array();
+	public $_needsValue = false, $_valueListAllowed = true, $_valueList = false;
 
 	abstract public function __construct($string);
 
@@ -353,7 +364,7 @@ class IntegerPositional extends Positional
 {
 	public function _value($value)
 	{
-		if (!ctype_digit($value)) {
+		if (!preg_match('/^-?\d+/', $value)) {
 			throw new Exception\ValueError($value.' is not a number');
 		}
 		return (int) $value;
