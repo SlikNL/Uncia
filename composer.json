@@ -1,0 +1,42 @@
+{
+	"authors": [
+		{
+			"name": "Denis Sokolov",
+			"email": "denis@sokolov.cc",
+			"homepage": "http://sokolov.cc"
+		},
+		{
+			"name": "Slik",
+			"homepage": "http://slik.eu"
+		}
+	],
+	"autoload": {
+		"psr-0": {
+			"Slik\\": ""
+		},
+		"files": [
+			"Slik/Uncia/bare.php",
+			"Slik/Uncia/io.php",
+			"Slik/Uncia/preg.php",
+			"Slik/Uncia/run.php",
+			"Slik/Uncia/str.php"
+		]
+	},
+	"description": "Tools to write scripts in PHP a much lesser pain that is usually tends to.",
+	"homepage": "https://github.com/SlikNL/Uncia",
+	"keywords": [
+		"shell",
+		"ssh",
+		"stdout"
+	],
+	"license": "MIT",
+	"name": "slik/uncia",
+	"require-dev": {
+		"phpunit/phpunit": "*"
+	},
+	"support": {
+		"email": "denis@sokolov.cc",
+		"issues": "https://github.com/SlikNL/Uncia/issues",
+		"source": "https://github.com/SlikNL/Uncia"
+	}
+}
