@@ -11,6 +11,7 @@ class Args
 	{
 		$this->description = $description;
 		$this->bool('-h, --help')->description('See help and usage');
+		$this->bool('-d, --debug')->description('Enable full traceback reports');
 	}
 
 	public function __invoke($args)
@@ -149,14 +150,6 @@ class Args
 
 		$this->program = reset($args);
 
-		// If program has required arguments and we haven't passed any,
-		// show usage without throwing an error
-		if (isset($this->positional[count($args) - 1])
-			&& $this->positional[count($args) - 1]->required
-		) {
-			throw new Exception\UserError('Missing required values');
-		}
-
 		while (true) {
 			$value = next($args);
 			if (!is_string($value)) {
@@ -200,7 +193,6 @@ class Args
 				} else {
 					$value = $argument->value($value);
 				}
-				$result->{$argument->name} = $value;
 			} catch (Exception\ValueError $e) {
 				throw new Exception\UserError($e->getMessage().' for '.$argument->name);
 			}
@@ -220,8 +212,17 @@ class Args
 			if (property_exists($result, $positional->name)) {
 				continue;
 			}
+
+			if ($positional->required) {
+				throw new Exception\UserError('Missing required argument '.$positional->name);
+			}
+
 			$default = $positional->default;
 			$result->{$positional->name} = is_callable($default) ? $default() : $default;
+		}
+
+		if ($result->debug) {
+			$_SERVER['DEBUG'] = true;
 		}
 
 		return $result;
