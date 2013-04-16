@@ -1,0 +1,8 @@
+For development, you want phpunit.
+Install from Composer:
+
+php composer.phar update --dev
+
+Run tests:
+
+vendor/bin/phpunit tests
