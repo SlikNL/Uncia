@@ -4,7 +4,10 @@ namespace Slik\Uncia;
 if (!isset($_SERVER['UNCIA_DEBUG'])) {
 	set_error_handler(
 		function ($no, $message, $file = null, $line = null, $context = null) {
-			throw new PHPError($message, $file, $line);
+			if (!(error_reporting() & $no)) {
+				return;
+			}
+			throw new PHPError($message, $file, $line, $context);
 		}
 	);
 
