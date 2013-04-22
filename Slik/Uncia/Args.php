@@ -1,5 +1,6 @@
 <?php
 namespace Slik\Uncia;
+use Slik\Uncia\Exception\SyntaxError;
 
 require_once __DIR__ . '/Exception.php';
 
@@ -41,7 +42,7 @@ class Args
 			$args = $argv;
 		}
 		if (!is_array($args)) {
-			throw new Exception\SyntaxError('parse takes an array');
+			throw new SyntaxError('parse takes an array');
 		}
 		try {
 			$result = $this->parse_args($args);

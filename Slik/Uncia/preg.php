@@ -1,5 +1,6 @@
 <?php
 namespace Slik\Uncia;
+use Slik\Uncia\Exception\SyntaxError;
 
 function preg($pattern, $subject)
 {

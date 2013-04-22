@@ -80,6 +80,12 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
 		$this->parse('rock');
 	}
 
+	public function testPositionalListSyntaxError()
+	{
+		$this->setExpectedException('\\Slik\\Uncia\\Exception\\SyntaxError');
+		$this->args->str('name')->list('john');
+	}
+
 	public function testPositionalMultiple()
 	{
 		$this->args->int('clouds');
