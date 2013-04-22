@@ -13,6 +13,7 @@ class PregTest extends \PHPUnit_Framework_TestCase
 	public function dataSimple()
 	{
 		return array(
+			array('john', '/[a-z]+/', ' 23 23 john223'),
 			array('john', '/([a-z]+)/', ' 23 23 john223'),
 			array(array('john', 'snow'), '/([a-z]+) ([a-z]+)/', ' 23 23 john snow223'),
 		);

@@ -11,6 +11,9 @@ function preg($pattern, $subject)
 	if (!$success) {
 		throw new Exception\NotFound('Pattern '.$pattern.' did not match');
 	}
+	if (count($matches) === 1) {
+		return $matches[0];
+	}
 	unset($matches[0]);
 	if (count($matches) === 1) {
 		return $matches[1];
