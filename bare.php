@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/Slik/Uncia/bare.php';
 require_once __DIR__ . '/Slik/Uncia/io.php';
+require_once __DIR__ . '/Slik/Uncia/preg.php';
 require_once __DIR__ . '/Slik/Uncia/run.php';
 require_once __DIR__ . '/Slik/Uncia/str.php';
 
