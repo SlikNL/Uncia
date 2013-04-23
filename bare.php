@@ -12,10 +12,9 @@ if (version_compare(PHP_VERSION, '5.3', '<')) {
 
 spl_autoload_register(
 	function ($name) {
-		if (!preg_match('/^Slik\\\\Uncia\\\\/', $name)) {
-			return false;
+		if (preg_match('/^Slik\\\\Uncia\\\\/', $name)) {
+			$path = __DIR__ . '/' . str_replace('\\', '/', $name) . '.php';
+			require $path;
 		}
-		$path = __DIR__ . '/' . str_replace('\\', '/', $name) . '.php';
-		require $path;
 	}
 );
