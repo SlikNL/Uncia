@@ -4,6 +4,10 @@ namespace Slik\Uncia;
 if (!isset($_SERVER['UNCIA_DEBUG'])) {
 	set_error_handler(
 		function ($no, $message, $file = null, $line = null, $context = null) {
+			$minorError = (bool) ($no & (E_STRICT | E_DEPRECATED));
+			if (strpos($file, '/share/pear/') !== false && $minorError) {
+				return;
+			}
 			if (!(error_reporting() & $no)) {
 				return;
 			}
