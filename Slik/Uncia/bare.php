@@ -10,12 +10,12 @@ function errors()
 {
 	if (!isset($_SERVER['UNCIA_DEBUG'])) {
 		set_error_handler(
-			function ($no, $message, $file = null, $line = null, $context = null) {
-				$minorError = (bool) ($no & (E_STRICT | E_DEPRECATED));
+			function ($num, $message, $file = null, $line = null, $context = null) {
+				$minorError = (bool) ($num & (E_STRICT | E_DEPRECATED));
 				if (strpos($file, '/share/pear/') !== false && $minorError) {
 					return;
 				}
-				if (!(error_reporting() & $no)) {
+				if (!(error_reporting() & $num)) {
 					return;
 				}
 				throw new PHPError($message, $file, $line, $context);
@@ -23,23 +23,23 @@ function errors()
 		);
 
 		set_exception_handler(
-			function ($e) {
-				if ($e instanceof Exception\Abort) {
-					exit($e->getCode());
+			function ($exc) {
+				if ($exc instanceof Exception\Abort) {
+					exit($exc->getCode());
 				}
 				$str = ttycolor('brown').'Error:'
-					.' '.trim($e->getMessage() ?: get_class($e));
-				if ($e->getFile()) {
-					$str .= ' in ' . basename($e->getFile());
-					if ($e->getLine()) {
-						$str .= ':'.$e->getLine();
+					.' '.trim($exc->getMessage() ?: get_class($exc));
+				if ($exc->getFile()) {
+					$str .= ' in ' . basename($exc->getFile());
+					if ($exc->getLine()) {
+						$str .= ':'.$exc->getLine();
 					}
 				}
 				stderr($str);
 
 				if (isset($_SERVER['DEBUG'])) {
 					stderr('Traceback:');
-					foreach ($e->getTrace() as $frame) {
+					foreach ($exc->getTrace() as $frame) {
 						if (isset($frame['file'])) {
 							$str = ' - ' . basename($frame['file']);
 							if ($frame['line']) {
@@ -59,7 +59,7 @@ function errors()
 function setErrorHandler(callable $handler)
 {
 	$previous = set_error_handler(
-		function ($no, $message, $file = null, $line = null, $context = null) use ($handler, &$previous) {
+		function ($num, $message, $file = null, $line = null, $context = null) use ($handler, &$previous) {
 
 			if (!$previous) {
 				$previous = function () {
@@ -67,8 +67,8 @@ function setErrorHandler(callable $handler)
 				};
 			}
 
-			return $handler($no, $message, $file, $line, $context)
-				|| $previous($no, $message, $file, $line, $context);
+			return $handler($num, $message, $file, $line, $context)
+				|| $previous($num, $message, $file, $line, $context);
 		}
 	);
 }
