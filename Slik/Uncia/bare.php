@@ -55,3 +55,20 @@ function errors()
 		error_reporting(E_ALL | E_STRICT);
 	}
 }
+
+function setErrorHandler(callable $handler)
+{
+	$previous = set_error_handler(
+		function ($no, $message, $file = null, $line = null, $context = null) use ($handler, &$previous) {
+
+			if (!$previous) {
+				$previous = function () {
+					return false;
+				};
+			}
+
+			return $handler($no, $message, $file, $line, $context)
+				|| $previous($no, $message, $file, $line, $context);
+		}
+	);
+}
