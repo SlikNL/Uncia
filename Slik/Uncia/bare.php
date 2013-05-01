@@ -11,10 +11,6 @@ function errors()
 	if (!isset($_SERVER['UNCIA_DEBUG'])) {
 		set_error_handler(
 			function ($num, $message, $file = null, $line = null, $context = null) {
-				$minorError = (bool) ($num & (E_STRICT | E_DEPRECATED));
-				if (strpos($file, '/share/pear/') !== false && $minorError) {
-					return;
-				}
 				if (!(error_reporting() & $num)) {
 					return;
 				}
