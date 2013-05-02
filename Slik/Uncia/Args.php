@@ -35,6 +35,11 @@ class Args
 		return $this->add($arg, 'String');
 	}
 
+	public function string($arg)
+	{
+		return $this->str($arg);
+	}
+
 	public function parse($args = null, $throw = false)
 	{
 		if (is_null($args)) {
