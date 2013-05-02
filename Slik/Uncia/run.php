@@ -44,6 +44,15 @@ function run($cmd, $values = null, $options = null)
 	return $stdout;
 };
 
+function runthru($cmd, $values = null)
+{
+	$cmd = _run_placeholders($cmd, $values);
+	passthru($cmd, $code);
+	if ($code > 0) {
+		throw new Exception\RunError('Command failed with code '.$code);
+	}
+}
+
 function _run_placeholders($cmd, $values)
 {
 	$values = (array) $values ?: array();

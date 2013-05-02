@@ -24,6 +24,11 @@ function run()
 	return call_user_func_array('\\Slik\\Uncia\\run', func_get_args());
 }
 
+function runthru()
+{
+	return call_user_func_array('\\Slik\\Uncia\\runthru', func_get_args());
+}
+
 function stderr()
 {
 	return call_user_func_array('\\Slik\\Uncia\\stderr', func_get_args());
