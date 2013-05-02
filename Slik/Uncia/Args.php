@@ -249,7 +249,7 @@ class Args
 abstract class Argument
 {
 	public $default, $description, $name;
-	public $_needsValue = false, $_valueListAllowed = true, $_valueList = false;
+	public $_needsValue = false, $_valueListAllowed = true, $_valueList = [];
 
 	abstract public function __construct($string);
 
