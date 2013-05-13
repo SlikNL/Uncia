@@ -34,8 +34,8 @@ function str($anything)
 			return preg_replace('/^\[(.+)\]$/', '{stdClass \1}', str((array) $i));
 		}
 		if (method_exists($i, '__toString')) {
-			$s = (string) $i;
-			if (strpos($s, "\n") === false) {
+			$s = trim((string) $i);
+			if ($s && strpos($s, "\n") === false) {
 				return $s;
 			}
 		}
