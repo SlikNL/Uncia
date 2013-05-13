@@ -79,7 +79,7 @@ function ttycolor($name)
 		'white' => '1;37',
 	);
 	if (!isset($map[$name])) {
-		throw new SyntaxError('Unknown color '.$name);
+		throw new Exception\SyntaxError('Unknown color '.$name);
 	}
 	return "\033[" . $map[$name] . "m";
 }
