@@ -57,14 +57,16 @@ function _run_placeholders($cmd, $values)
 {
 	$values = (array) $values ?: array();
 
-	if (preg_match_all('/(?<= )\\?($| )/', $cmd) !== count($values)) {
+	$questions = '/^\\?(?= )|(?<= )\\?($| )/';
+
+	if (preg_match_all($questions, $cmd) !== count($values)) {
 		throw new SyntaxError('Parameter count does not match values count');
 	}
 
 	foreach ($values as $v) {
 		$v = escapeshellarg($v);
 		$v = str_replace('\\', '\\\\', str_replace('?', '\\?', $v));
-		$cmd = preg_replace('/(?<= )\\?($| )/', $v.'\1', $cmd, 1);
+		$cmd = preg_replace($questions, $v.'\1', $cmd, 1);
 	}
 
 	$cmd = str_replace('\\?', '?', $cmd);
