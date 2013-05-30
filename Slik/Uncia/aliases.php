@@ -14,6 +14,11 @@ function preg()
 	return call_user_func_array('\\Slik\\Uncia\\preg', func_get_args());
 }
 
+function preg_all()
+{
+	return call_user_func_array('\\Slik\\Uncia\\preg_all', func_get_args());
+}
+
 function prompt()
 {
 	return call_user_func_array('\\Slik\\Uncia\\prompt', func_get_args());
