@@ -53,6 +53,16 @@ function runthru($cmd, $values = null)
 	}
 }
 
+function _bash_pipefail_available()
+{
+	static $result;
+	if (is_null($result)) {
+		system('bash -c "set -o pipefail"', $code);
+		$result = $code === 0;
+	}
+	return $result;
+}
+
 function _run_placeholders($cmd, $values)
 {
 	$values = (array) $values ?: array();
@@ -70,6 +80,10 @@ function _run_placeholders($cmd, $values)
 	}
 
 	$cmd = str_replace('\\?', '?', $cmd);
+
+	if (_bash_pipefail_available()) {
+		$cmd = 'bash -c '.escapeshellarg('set -o pipefail && '.$cmd);
+	}
 
 	return $cmd;
 }
