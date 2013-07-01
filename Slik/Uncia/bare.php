@@ -9,6 +9,11 @@ function aliases()
 function errors()
 {
 	if (!isset($_SERVER['UNCIA_DEBUG'])) {
+
+		// Workaround PHP bug 42098
+		// https://bugs.php.net/bug.php?id=42098
+		class_exists('\\Slik\\Uncia\\PHPError');
+
 		set_error_handler(
 			function ($num, $message, $file = null, $line = null, $context = null) {
 				if (!(error_reporting() & $num)) {
