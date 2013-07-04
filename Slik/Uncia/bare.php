@@ -19,7 +19,8 @@ function errors()
 				if (!(error_reporting() & $num)) {
 					return;
 				}
-				throw new PHPError($message, $file, $line, $context);
+
+				throw new PHPError($message, $num, 0, $file, $line);
 			}
 		);
 
