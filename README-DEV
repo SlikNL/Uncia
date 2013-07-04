@@ -1,7 +1,7 @@
 For development, you want phpunit.
 Install from Composer:
 
-php composer.phar update --dev
+composer install --dev
 
 Run tests:
 
