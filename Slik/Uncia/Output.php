@@ -15,6 +15,12 @@ class Output
 		$this->args = $args;
 	}
 
+	public function noNewline()
+	{
+		$this->newline = false;
+		return $this;
+	}
+
 	public function stderr()
 	{
 		file_put_contents('php://stderr', $this->toString(STDERR));
@@ -42,6 +48,7 @@ class Output
 	 */
 
 	private $args;
+	private $newline = true;
 	private $underline;
 
 	private function format($args)
@@ -65,7 +72,7 @@ class Output
 
 		// Add a newline
 		$str = implode('', $args);
-		if (substr($str, -1) !== "\n") {
+		if ($this->newline && substr($str, -1) !== "\n") {
 			$str .= "\n";
 		}
 
