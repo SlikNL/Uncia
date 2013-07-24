@@ -46,6 +46,10 @@ class Output
 
 	private function format($args)
 	{
+		if (!is_array($args)) {
+			$args = [$args];
+		}
+
 		// Shortcut
 		if (empty($args)) {
 			return "\n";
