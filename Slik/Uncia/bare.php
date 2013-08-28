@@ -51,6 +51,7 @@ function errors()
 						}
 					}
 				}
+				exit(1);
 			}
 		);
 
