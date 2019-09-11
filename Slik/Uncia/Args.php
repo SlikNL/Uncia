@@ -65,7 +65,7 @@ class Args
 			$this->usage();
 			throw new Exception\Abort(2);
 		}
-		assert('is_object($result)');
+		assert(is_object($result));
 		return $result;
 	}
 
@@ -301,7 +301,7 @@ abstract class Argument
 	{
 		$value = $this->_value($value);
 		if (is_array($this->_valueList) && $this->_valueList) {
-			assert('$this->_valueListAllowed');
+			assert($this->_valueListAllowed);
 			if ($this->_valueList && !in_array($value, $this->_valueList)) {
 				throw new Exception\UserError($this->name
 					.' can only be one of the following: '
